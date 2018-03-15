@@ -1,0 +1,24 @@
+Se crean dos variables
+int contacto = 2;
+int led = 13;
+
+void setup()
+{
+  pinMode(contacto, INPUT);
+  pinMode(led, OUTPUT);
+}
+void loop()
+{
+/// 20 son las veces que va entrar al ciclo 
+/// un delay de 100
+  if  (digitalRead(contacto)== LOW){
+    for(int a=0; a<20; a++){
+      digitalWrite(led,HIGH);
+      delay(100);
+      digitalWrite(led,LOW);
+      delay(100);
+      }
+    }else{
+       digitalWrite(led,LOW);
+      }
+}
