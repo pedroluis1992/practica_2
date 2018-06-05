@@ -1,24 +1,38 @@
-Se crean dos variables
-int contacto = 2;
-int led = 13;
+#include "pitches.h" 
+#include "LowPower.h"
+#define reedswitch 2
 
-void setup()
-{
-  pinMode(contacto, INPUT);
+volatile int state = LOW;
+int buzzer = 9;
+int led= 13;  
+int sonido = NOTE_C5;  
+
+
+void setup() {
+  pinMode(reedswitch, INPUT_PULLUP);
   pinMode(led, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(reedswitch), InterrupcionArduino, RISING);
+  pinMode(buzzer, OUTPUT);
+  tone(8, sonido);  
+  Serial.begin(9600);
 }
-void loop()
-{
-/// 20 son las veces que va entrar al ciclo 
-/// un delay de 100
-  if  (digitalRead(contacto)== LOW){
-    for(int a=0; a<20; a++){
-      digitalWrite(led,HIGH);
-      delay(100);
-      digitalWrite(led,LOW);
-      delay(100);
-      }
-    }else{
-       digitalWrite(led,LOW);
-      }
+
+void loop() {
+      { LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF); 
+      analogWrite(buzzer, 0);
+     digitalWrite(led, HIGH);
+     delay(1000);
+     digitalWrite(led, LOW);
+   }
+  delay(200);
+  digitalWrite(led, LOW);
+  Serial.println("CERRADA");
+  analogWrite(buzzer, 0);
+}
+
+void InterrupcionArduino() {
+  digitalWrite(led, HIGH);
+  Serial.println("ABIERTA");
+ 
+  analogWrite(buzzer, 10);
 }
